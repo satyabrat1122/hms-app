@@ -1,6 +1,5 @@
 package com.hms.controller;
 
-import com.hms.entity.AppUser;
 import com.hms.payload.LoginDto;
 import com.hms.payload.TokenDto;
 import com.hms.payload.UserDto;
@@ -42,8 +41,21 @@ public class UserController {
         String token=userService.login(loginDto);
         TokenDto tokenDto=new TokenDto();
         tokenDto.setToken(token);
-        tokenDto.setStatus("Getinto");
+        tokenDto.setStatus("JWT");
         return new ResponseEntity<>(tokenDto,HttpStatus.OK);
+
+    }
+    @PostMapping("/signup-property-owner")
+    public ResponseEntity<?> createPropertyOwnerUser(
+            @RequestBody UserDto userDto
+    )
+    {
+        String s = userService.alreadyExist(userDto);
+        if(s!=null) {
+            return new ResponseEntity<>(s, HttpStatus.OK);
+        }
+        UserDto dto=userService.createPropertyOwner(userDto);
+        return new ResponseEntity<>(dto,HttpStatus.CREATED);
 
     }
 

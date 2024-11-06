@@ -57,6 +57,7 @@ public class UserService {
         AppUser appUser = mapToEntity(userDto);
         String hashpw = BCrypt.hashpw(appUser.getPassword(), BCrypt.gensalt(5));
         appUser.setPassword(hashpw);
+        appUser.setRole("ROLE_USER");
         AppUser save = appUserRepository.save(appUser);
         UserDto userDto1 = mapToDto(save);
         return userDto1;
@@ -65,15 +66,26 @@ public class UserService {
 
 
     public String login(LoginDto loginDto) {
-        AppUser user=new AppUser();
+        AppUser user = new AppUser();
         Optional<AppUser> username = appUserRepository.findByUsername(loginDto.getUsername());
-        AppUser appUser = username.get();
-        boolean checkpw = BCrypt.checkpw( loginDto.getPassword(),appUser.getPassword());
-        if(checkpw){
-            return jwtService.generateToken(loginDto.getUsername());
+        if (username.isPresent()) {
+            AppUser appUser = username.get();
+            boolean checkpw = BCrypt.checkpw(loginDto.getPassword(), appUser.getPassword());
+            if (checkpw) {
+                return jwtService.generateToken(loginDto.getUsername());
+            }
         }
-        else{
-            return "Invalid Username Or Password";
-        }
+        return "Invalid Username Or Password";
+    }
+
+
+    public UserDto createPropertyOwner(UserDto userDto) {
+        AppUser appUser = mapToEntity(userDto);
+        String hashpw = BCrypt.hashpw(appUser.getPassword(), BCrypt.gensalt(5));
+        appUser.setPassword(hashpw);
+        appUser.setRole("ROLE_OWNER");
+        AppUser save = appUserRepository.save(appUser);
+        UserDto userDto1 = mapToDto(save);
+        return userDto1;
     }
 }
