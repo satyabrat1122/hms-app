@@ -10,7 +10,7 @@ public interface CityService {
 
     public List<City> getAllCity();
 
-    public void deleteCityById(long id);
+    public void deleteCityById(long cityId);
 
     boolean updateCityById(long cityId, CityDto cityDto);
 }

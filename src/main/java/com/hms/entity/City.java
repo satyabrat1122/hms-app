@@ -7,13 +7,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
-
 @Getter
 @Setter
 @Entity
 @Table(name = "city")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +23,8 @@ public class City {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true)
-    //  @JsonManagedReference
-    private Set<Property> properties = new LinkedHashSet<>();
+
+
+//    private List<Property> properties;
 
 }

@@ -1,9 +1,11 @@
 package com.hms.implementations;
 
 import com.hms.entity.City;
+import com.hms.entity.Property;
 import com.hms.payload.CityDto;
 import com.hms.repository.CityRepository;
 import com.hms.repository.CountryRepository;
+import com.hms.repository.PropertyRepository;
 import com.hms.service.CityService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class CityServiceImpl implements CityService {
 
     @Autowired
     private CountryRepository countryRepository;
+    @Autowired
+    private PropertyRepository propertyRepository;
+
     @Override
     public void addCity(CityDto cityDto) {
       City city=new City();
@@ -35,8 +40,15 @@ public class CityServiceImpl implements CityService {
     }
     @Transactional
     @Override
-    public void deleteCityById(long id) {
-     cityRepository.deleteById(id);
+    public void deleteCityById(long cityId) {
+//        City city = cityRepository.findById(cityId).orElseThrow(() -> new RuntimeException("City not found"));
+//        for (Property property : city.getProperties()) {
+//            property.setCity(null);
+//        }
+//
+//        propertyRepository.saveAll(city.getProperties());
+//        cityRepository.deleteById(cityId);
+
     }
 
     @Override

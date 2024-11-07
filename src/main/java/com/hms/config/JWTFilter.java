@@ -23,7 +23,8 @@ public class JWTFilter extends OncePerRequestFilter {
     private JWTService jwtService;
     private AppUserRepository appUserRepository;
 
-    public JWTFilter(JWTService jwtService, AppUserRepository appUserRepository) {
+    public JWTFilter(JWTService jwtService,
+                     AppUserRepository appUserRepository) {
         this.jwtService = jwtService;
         this.appUserRepository = appUserRepository;
     }

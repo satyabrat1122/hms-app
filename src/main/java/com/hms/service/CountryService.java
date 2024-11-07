@@ -11,7 +11,7 @@ public interface CountryService {
     public void addCountry(CountryDto countryDto);
     public List<Country> getAllCountry();
 
-    public void deleteCountryById(long id);
+    public void deleteCountryById(long countryId);
 
     public boolean updateCountryById(long country_id, CountryDto countryDto);
 }

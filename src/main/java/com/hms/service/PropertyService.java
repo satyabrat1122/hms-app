@@ -14,7 +14,7 @@ public interface PropertyService {
 
     public void deletePropertyById(long property_id);
 
-    public boolean updatePropertyById(long property_id, PropertyDto propertyDto);
+    public boolean updatePropertyById(long propertyId, PropertyDto propertyDto);
 
 
 }

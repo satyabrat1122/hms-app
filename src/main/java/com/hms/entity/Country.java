@@ -7,13 +7,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "country")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+
 public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +24,9 @@ public class Country {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)  // CascadeType.ALL may delete related entities
-    private Set<Property> properties;
+      // No cascade or orphan removal
+//    private List<Property> properties;
+
 
 
 }

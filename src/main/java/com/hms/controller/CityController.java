@@ -44,19 +44,11 @@ public class CityController {
         return new ResponseEntity<>(all, HttpStatus.OK);
 
      }
-
+    //Localhost:8080/api/v1/city/deleteCityById/1
     @DeleteMapping("/deleteCityById/{id}")
-    public ResponseEntity<?> deleteCity(@PathVariable long id){
-         Optional<City> byId = cityRepository.findById(id);
-        City city = byId.get();
-        String name = city.getName();
-        if(byId.isPresent()){
-            cityServiceImpl.deleteCityById(id);
-            return new ResponseEntity<>("Deleted",HttpStatus.OK);
-        }
-        else {
-            return new ResponseEntity<>("Not Found",HttpStatus.OK);
-        }
+    public String deleteCity(@PathVariable("id") long cityId){
+        cityServiceImpl.deleteCityById(cityId);
+        return "Deleted";
     }
       @GetMapping("/findAll")
       public ResponseEntity<?> findAll(){

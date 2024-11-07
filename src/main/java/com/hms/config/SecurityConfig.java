@@ -16,8 +16,10 @@ public class SecurityConfig{
     public SecurityFilterChain securityFilterChain (
             HttpSecurity http
     ) throws Exception{
+        //hcd2
         http.csrf().disable().cors().disable();
         http.addFilterBefore(jwtFilter, AuthorizationFilter.class);
+        //haap
         http.authorizeHttpRequests().anyRequest().permitAll();
 //       http.authorizeHttpRequests().
 //               requestMatchers("/api/v1/users/signup","/api/v1/users/signup-property-owner","/api/v1/users/login").

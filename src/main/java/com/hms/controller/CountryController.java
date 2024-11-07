@@ -1,5 +1,6 @@
 package com.hms.controller;
 
+import com.hms.entity.AppUser;
 import com.hms.entity.Country;
 import com.hms.implementations.CountryServiceImpl;
 import com.hms.payload.CountryDto;
@@ -7,6 +8,7 @@ import com.hms.repository.CountryRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +30,7 @@ public class CountryController {
     @PostMapping("/addCountry")
     public ResponseEntity<?> createCountry(
             @RequestBody CountryDto countryDto
+
             ) {
         Optional<Country> byName = countryRepository.findByName(countryDto.getName());
         if(byName.isPresent()){
@@ -37,16 +40,18 @@ public class CountryController {
         return new ResponseEntity<>("Added successfully",HttpStatus.CREATED);
 
   }
+
   @GetMapping
   public ResponseEntity<?> findAll(){
       List<Country> all = countryRepository.findAll();
       return new ResponseEntity<>(all,HttpStatus.OK);
   }
 
+//localhost:8080/api/v1/country
   @DeleteMapping("/{id}")
-  public String deleteCountry(@PathVariable long id){
-        countryServiceImpl.deleteCountryById(id);
-        return "Deleted";
+  public String deleteCountry(@PathVariable("id") long countryId){
+      countryServiceImpl.deleteCountryById(countryId);
+      return "Deleted";
   }
 
   @PutMapping("/{id}")
@@ -57,5 +62,12 @@ public class CountryController {
           return "Updated";
       }
       return "Id not found";
+  }
+
+  @PostMapping("/demo")
+  public AppUser demo(
+          @AuthenticationPrincipal AppUser user
+  ){
+        return user;
   }
 }
