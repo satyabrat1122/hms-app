@@ -4,6 +4,7 @@ import com.hms.entity.AppUser;
 import com.hms.entity.Property;
 import com.hms.entity.Review;
 import com.hms.implementations.ReviewServiceImpl;
+import com.hms.payload.ReviewDto;
 import com.hms.repository.PropertyRepository;
 import com.hms.repository.ReviewRepository;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ public class ReviewController {
         this.reviewServiceImpl = reviewServiceImpl;
     }
     @PostMapping
+    //localhost:8080/api/v1/review?propertyId=1
     public ResponseEntity<?> write(
             @RequestBody Review review,
             @RequestParam long propertyId,
@@ -50,6 +52,18 @@ public class ReviewController {
     ){
         List<Review> reviews=reviewRepository.findByAppUser(appUser);
         return new ResponseEntity<>(reviews,HttpStatus.OK);
+    }
+    //localhost:8080/api/v1/review/update?propertyId
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateUsersReview(
+
+            @RequestBody Review review,
+            @AuthenticationPrincipal AppUser user,
+            @PathVariable("id") long propertyId
+            ) {
+
+        String s = reviewServiceImpl.updateUserReview(review, user, propertyId);
+        return  new ResponseEntity<>(s,HttpStatus.OK);
     }
 
 }

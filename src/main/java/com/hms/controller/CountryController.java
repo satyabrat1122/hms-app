@@ -50,8 +50,15 @@ public class CountryController {
 //localhost:8080/api/v1/country
   @DeleteMapping("/{id}")
   public String deleteCountry(@PathVariable("id") long countryId){
-      countryServiceImpl.deleteCountryById(countryId);
-      return "Deleted";
+      Country country = countryServiceImpl.findById(countryId);
+
+      if (country != null) {
+          // Delete the country (if no cascading delete is set on properties, properties will not be deleted)
+          countryServiceImpl.deleteCountryById(countryId);
+          return "Country Deleted, Properties Retained";
+      } else {
+          return "Country not found";
+      }
   }
 
   @PutMapping("/{id}")

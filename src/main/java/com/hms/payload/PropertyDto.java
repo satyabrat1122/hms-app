@@ -2,6 +2,7 @@ package com.hms.payload;
 
 import com.hms.entity.City;
 import com.hms.entity.Country;
+import com.hms.entity.State;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,5 +19,8 @@ public class PropertyDto {
 
     private City city;
     private Long city_id;
+
+    private State state;
+    private Long state_id;
 
 }

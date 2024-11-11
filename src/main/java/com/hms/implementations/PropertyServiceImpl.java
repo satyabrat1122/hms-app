@@ -3,10 +3,12 @@ package com.hms.implementations;
 import com.hms.entity.City;
 import com.hms.entity.Country;
 import com.hms.entity.Property;
+import com.hms.entity.State;
 import com.hms.payload.PropertyDto;
 import com.hms.repository.CityRepository;
 import com.hms.repository.CountryRepository;
 import com.hms.repository.PropertyRepository;
+import com.hms.repository.StateRepository;
 import com.hms.service.PropertyService;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -18,21 +20,24 @@ public class PropertyServiceImpl implements PropertyService {
     private PropertyRepository propertyRepository;
     private CityRepository cityRepository;
     private CountryRepository countryRepository;
+    private StateRepository stateRepository;
 
-    public PropertyServiceImpl(PropertyRepository propertyRepository, CityRepository cityRepository, CountryRepository countryRepository) {
+    public PropertyServiceImpl(PropertyRepository propertyRepository, CityRepository cityRepository, CountryRepository countryRepository, StateRepository stateRepository) {
         this.propertyRepository = propertyRepository;
         this.cityRepository = cityRepository;
         this.countryRepository = countryRepository;
+        this.stateRepository = stateRepository;
     }
 
     @Override
-    public void addProperty(PropertyDto propertyDto, long country_id, long city_id) {
+    public void addProperty(PropertyDto propertyDto, long country_id, long city_id,long state_id) {
         City city = cityRepository.findById(city_id).orElseThrow(() -> new RuntimeException("City Not Found"));
         Country country = countryRepository.findById(country_id).orElseThrow(() -> new RuntimeException("Country not found"));
-
+        State state = stateRepository.findById(state_id).orElseThrow(() -> new RuntimeException("State Not Found"));
         Property property = mapToEntity(propertyDto);
         property.setCity(city);
         property.setCountry(country);
+        property.setState(state);
         propertyRepository.save(property);
 
     }

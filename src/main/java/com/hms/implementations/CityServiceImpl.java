@@ -7,6 +7,7 @@ import com.hms.repository.CityRepository;
 import com.hms.repository.CountryRepository;
 import com.hms.repository.PropertyRepository;
 import com.hms.service.CityService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,12 +18,12 @@ import java.util.Optional;
 @Service
 public class CityServiceImpl implements CityService {
 
-
     @Autowired
     private CityRepository cityRepository;
 
     @Autowired
     private CountryRepository countryRepository;
+
     @Autowired
     private PropertyRepository propertyRepository;
 
@@ -41,13 +42,13 @@ public class CityServiceImpl implements CityService {
     @Transactional
     @Override
     public void deleteCityById(long cityId) {
-//        City city = cityRepository.findById(cityId).orElseThrow(() -> new RuntimeException("City not found"));
-//        for (Property property : city.getProperties()) {
-//            property.setCity(null);
-//        }
-//
-//        propertyRepository.saveAll(city.getProperties());
-//        cityRepository.deleteById(cityId);
+        City city = cityRepository.findById(cityId).orElseThrow(() -> new EntityNotFoundException("City Not Found"));
+        List<Property> property=propertyRepository.findByCity(city);
+        for(Property p:property){
+            p.setCity(null);
+            propertyRepository.save(p);
+        }
+        cityRepository.deleteById(cityId);
 
     }
 
@@ -63,5 +64,13 @@ public class CityServiceImpl implements CityService {
         return false;
     }
 
+    @Override
+    public void addNewCity(CityDto cityDto) {
+
+
+        City city=new City();
+        city.setName(cityDto.getName());
+        cityRepository.save(city);
+    }
 
 }

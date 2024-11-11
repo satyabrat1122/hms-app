@@ -7,6 +7,7 @@ import com.hms.payload.PropertyDto;
 import com.hms.repository.CountryRepository;
 import com.hms.repository.PropertyRepository;
 import com.hms.service.CountryService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -39,19 +40,14 @@ public class CountryServiceImpl implements CountryService {
     @Transactional
     @Override
     public void deleteCountryById(long countryId) {
-        // Get the Country by ID
-//        Country country = countryRepository.findById(countryId).orElseThrow(() -> new RuntimeException("Country not found"));
-//
-//        // Disassociate the properties from this country by setting the country reference to null
-//        for (Property property : country.getProperties()) {
-//            property.setCountry(null);
-//        }
-//
-//        // Optionally, save the updated properties (in case changes need to be persisted)
-//        propertyRepository.saveAll(country.getProperties());
-//
-//        // Now, delete the country
-//        countryRepository.deleteById(countryId);
+        Country country = countryRepository.findById(countryId).orElseThrow(() -> new EntityNotFoundException("Could not find"));
+        List<Property> property = propertyRepository.findByCountry(country);
+        for(Property property1:property){
+            property1.setCountry(null);
+            propertyRepository.save(property1);
+        }
+
+        countryRepository.deleteById(countryId);
     }
 
     @Override
@@ -64,5 +60,11 @@ public class CountryServiceImpl implements CountryService {
             return true;
         }
         return false;
+    }
+
+    public Country findById(long countryId) {
+        Optional<Country> byId = countryRepository.findById(countryId);
+        Country country = byId.get();
+        return country;
     }
 }

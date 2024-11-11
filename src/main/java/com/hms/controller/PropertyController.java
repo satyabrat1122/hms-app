@@ -25,16 +25,19 @@ public class PropertyController {
     }
 
     @PostMapping("/addProperty")
+    //localhost:8080/api/v1/property/addProperty?country_id=1&city_id=1
     public ResponseEntity<?> addPropertyDetails(
             @RequestBody PropertyDto propertyDto,
             @RequestParam long country_id,
-            @RequestParam long city_id
+            @RequestParam long city_id,
+            @RequestParam long state_id
+
     ){
         Optional<Property> byName = propertyRepository.findByName(propertyDto.getName());
         if(byName.isPresent()){
             return new ResponseEntity<>("Property already exists", HttpStatus.NOT_ACCEPTABLE);
         }else{
-            propertyServiceImpl.addProperty(propertyDto, country_id,city_id);
+            propertyServiceImpl.addProperty(propertyDto, country_id,city_id,state_id);
             return new ResponseEntity<>("Property successfully added", HttpStatus.CREATED);
         }
     }
@@ -65,14 +68,19 @@ public class PropertyController {
             }
             }return new ResponseEntity<>("Id not found",HttpStatus.NOT_FOUND);
         }
-
+       //localhost:8080/api/v1/property/search-hotels?name=
         @GetMapping("/search-hotels")
-        public List<Property> searchHotels(
+        public ResponseEntity<?> searchHotels(
                 @RequestParam String name
 
         ){
-            List<Property> properties = propertyRepository.searchHotel(name);
-            return properties;
+
+        List<Property> properties = propertyRepository.searchHotel(name);
+        if(properties.isEmpty()){
+            return new ResponseEntity<>("No hotels found",HttpStatus.NOT_FOUND);
+        }
+
+            return new ResponseEntity<>(properties,HttpStatus.OK);
         }
 
 }

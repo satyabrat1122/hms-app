@@ -6,7 +6,7 @@ import com.hms.payload.PropertyDto;
 import java.util.List;
 
 public interface PropertyService {
-    public void addProperty(PropertyDto propertyDto , long country_id, long city_id);
+    public void addProperty(PropertyDto propertyDto , long country_id, long city_id,long state_id);
 
 
 

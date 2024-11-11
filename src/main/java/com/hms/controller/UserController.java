@@ -22,6 +22,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
+    //localhost:8080/api/v1/users/signup
     public ResponseEntity<?> signUp(
             @RequestBody UserDto userDto
             )

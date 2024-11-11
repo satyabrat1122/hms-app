@@ -31,11 +31,20 @@ public class CityController {
 
         Optional<City> byName = cityRepository.findByName(cityDto.getName());
         if(byName.isPresent()){
-            return new ResponseEntity<>("City already exits", HttpStatus.NOT_ACCEPTABLE);
-        }else{
-            cityServiceImpl.addCity(cityDto);
+            return new ResponseEntity<>("City already exits", HttpStatus.OK);
+        }
+
+//            City city=new City();
+//
+//            city.setName(cityDto.getName());
+//            cityRepository.save(city);
+//
+        else {
+
+            cityServiceImpl.addNewCity(cityDto);
             return new ResponseEntity<>("City added successfully", HttpStatus.CREATED);
         }
+
     }
 
     @GetMapping
@@ -56,6 +65,7 @@ public class CityController {
           return new ResponseEntity<>(all,HttpStatus.OK);
 
       }
+
       @PutMapping("/{id}")
       public ResponseEntity<?> updateCity(@PathVariable("id") long cityId,
                                           @RequestBody CityDto cityDto){

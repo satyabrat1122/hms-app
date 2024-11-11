@@ -20,11 +20,11 @@ public class SecurityConfig{
         http.csrf().disable().cors().disable();
         http.addFilterBefore(jwtFilter, AuthorizationFilter.class);
         //haap
-        http.authorizeHttpRequests().anyRequest().permitAll();
+       http.authorizeHttpRequests().anyRequest().permitAll();
 //       http.authorizeHttpRequests().
 //               requestMatchers("/api/v1/users/signup","/api/v1/users/signup-property-owner","/api/v1/users/login").
-//                permitAll().requestMatchers("/api/v1/country").
-//                hasAnyRole("OWNER","ADMIN").anyRequest().authenticated();
+//                permitAll().requestMatchers("/api/v1/city").
+//                hasAnyRole("OWNER").anyRequest().authenticated();
         return http.build();
     }
 }

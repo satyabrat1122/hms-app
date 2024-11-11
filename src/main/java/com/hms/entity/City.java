@@ -20,11 +20,11 @@ public class City {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 
 
 
-//    private List<Property> properties;
+//  private List<Property> properties;
 
 }

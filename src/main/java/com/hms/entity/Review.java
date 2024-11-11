@@ -28,4 +28,6 @@ public class Review {
     @JoinColumn(name = "property_id")
     private Property property;
 
+
+
 }

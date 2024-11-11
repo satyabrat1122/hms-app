@@ -40,4 +40,9 @@ public class Property {
     @JoinColumn(name = "city_id")
     private City city;
 
+
+    @ManyToOne
+    @JoinColumn(name = "state_id")
+    private State state;
+
 }
