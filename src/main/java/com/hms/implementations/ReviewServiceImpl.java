@@ -4,6 +4,7 @@ import com.hms.entity.AppUser;
 import com.hms.entity.Property;
 import com.hms.entity.Review;
 import com.hms.payload.ReviewDto;
+import com.hms.repository.AppUserRepository;
 import com.hms.repository.PropertyRepository;
 import com.hms.repository.ReviewRepository;
 import com.hms.service.ReviewService;
@@ -17,9 +18,11 @@ import java.util.Optional;
 public class ReviewServiceImpl implements ReviewService {
     private ReviewRepository reviewRepository;
     private PropertyRepository propertyRepository;
-    public ReviewServiceImpl(ReviewRepository reviewRepository, PropertyRepository propertyRepository) {
+    private AppUserRepository appUserRepository;
+    public ReviewServiceImpl(ReviewRepository reviewRepository, PropertyRepository propertyRepository, AppUserRepository appUserRepository) {
         this.reviewRepository = reviewRepository;
         this.propertyRepository = propertyRepository;
+        this.appUserRepository = appUserRepository;
     }
 
 
@@ -34,6 +37,21 @@ public class ReviewServiceImpl implements ReviewService {
             return save;
         }
         return null;
+    }
+
+    @Override
+    public String deleteReview(long reviewId,AppUser user) {
+        AppUser appUser = appUserRepository.findById(user.getId()).get();
+        Review review = reviewRepository.findById(reviewId).get();
+        if(review==null){
+            return "No review exists";
+        }
+        if (review.getAppUser().getId() != appUser.getId()){
+            return "You cannot delete other users review";
+        }
+        reviewRepository.delete(review);
+        return "Review deleted";
+
     }
 
     public String updateUserReview(Review review, AppUser user, long propertyId) {

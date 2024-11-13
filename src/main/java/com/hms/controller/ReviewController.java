@@ -63,7 +63,15 @@ public class ReviewController {
             ) {
 
         String s = reviewServiceImpl.updateUserReview(review, user, propertyId);
+
         return  new ResponseEntity<>(s,HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public String deleteReview(@PathVariable("id") long reviewId,
+                               @AuthenticationPrincipal AppUser user
+    ){
+        String status=reviewServiceImpl.deleteReview(reviewId,user);
+        return status;
+    }
 }
