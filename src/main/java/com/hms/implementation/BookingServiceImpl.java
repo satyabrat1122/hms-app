@@ -42,25 +42,35 @@ public class BookingServiceImpl implements BookingService {
         Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new RuntimeException("Could not find Property"));
         List<Rooms> rooms = roomsRepository.findAvailableRooms(property, type, bookingsDto.getFromDate(), bookingsDto.getToDate());
 
-        for(Rooms room:rooms){
-            if(room.getCount()==0){
-                return "Rooms not available on: "+room.getDate();
+        for (Rooms room : rooms) {
+            if (room.getCount() == 0) {
+                return "Rooms not available on: " + room.getDate();
             }
+
         }
+        double basePrice = 0;
+        for (Rooms room : rooms) {
+            basePrice = room.getPerNightPrice() * (double) (rooms.size() - 1);
+        }
+        double gst=(basePrice*18)/100;
+        double totalPrice= basePrice+gst;
         Bookings bookings = mapToEntity(bookingsDto);
+        bookings.setBasePrice(basePrice);
+        bookings.setTotalGST(gst);
+        bookings.setTotalPrice(totalPrice);
         bookings.setProperty(property);
 
         Bookings savedBooking = bookingsRepository.save(bookings);
-        if(savedBooking!=null){
-            for(Rooms room:rooms){
-                room.setCount(room.getCount()-1);
+        if (savedBooking != null) {
+            for (Rooms room : rooms) {
+                room.setCount(room.getCount() - 1);
                 roomsRepository.save(room);
             }
 
         }
-          pdfService.generateBookingPdf("G:\\hms_bookings\\confirmation-order"+savedBooking.getId()+".pdf",property);
-          twilioService.sendSms("+917608825266","+15136665973","Booking Confirmed. Your booking id is: "+bookings.getId());
-          whatsAppService.sendWhatsAppMessage("+917608825266","+15136665973","Booking Confirmed. Your booking id is :"+bookings.getId());
+        pdfService.generateBookingPdf("G:\\hms_bookings\\confirmation-order" + savedBooking.getId() + ".pdf", property, savedBooking);
+      //  twilioService.sendSms("+917608825266",  "Booking Confirmed. Your booking id is: " + bookings.getId());
+        whatsAppService.sendWhatsAppMessage("+917608825266", "+14155238886", "Booking Confirmed. Your booking id is: " + bookings.getId());
         return "Booking Created Successfully";
     }
 

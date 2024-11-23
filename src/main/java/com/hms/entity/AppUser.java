@@ -29,4 +29,7 @@ public class AppUser {
     @Column(name = "role", nullable = false, length = 20)
     private String role;
 
+    @Column(name = "mobile_number", nullable = false)
+    private String mobileNumber;
+
 }

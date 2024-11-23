@@ -10,9 +10,10 @@ public class WhatsAppService {
     public String sendWhatsAppMessage(String to,String from, String messageContent) {
         try {
             Message message = Message.creator(
-                            new PhoneNumber(to),
-                            new PhoneNumber(from),                   // Twilio WhatsApp number
-                            messageContent)                             // the message
+                            new com.twilio.type.PhoneNumber("whatsapp:"+to),
+                            new com.twilio.type.PhoneNumber("whatsapp:"+from),
+                            messageContent
+                            )
                     .create();
 
             return "Message sent successfully! SID: " + message.getSid();

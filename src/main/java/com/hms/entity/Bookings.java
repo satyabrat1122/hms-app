@@ -28,4 +28,13 @@ public class Bookings {
     @JoinColumn(name = "property_id")
     private Property property;
 
+    @Column(name = "base_price", nullable = false)
+    private Double basePrice;
+
+    @Column(name = "total_gst", nullable = false)
+    private Double totalGST;
+
+    @Column(name = "total_price", nullable = false)
+    private Double totalPrice;
+
 }

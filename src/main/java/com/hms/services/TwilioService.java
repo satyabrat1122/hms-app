@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class TwilioService {
 
-    public String sendSms(String to,String from,String body){
+    public String sendSms(String to,String otp){
         Message message=Message.creator(
                 new com.twilio.type.PhoneNumber(to),
-                new com.twilio.type.PhoneNumber(from),
-                body
+                new com.twilio.type.PhoneNumber("+15136665973"),
+                otp
         ).create();
         return message.getSid();
     }

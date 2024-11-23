@@ -14,11 +14,16 @@ import java.util.Optional;
 public class UserService {
     private AppUserRepository appUserRepository;
     private JWTService jwtService;
+    private OTPService otpService;
 
-    public UserService(AppUserRepository appUserRepository, SecurityConfig securityConfig, JWTService jwtService) {
+
+
+    public UserService(AppUserRepository appUserRepository, SecurityConfig securityConfig, JWTService jwtService, OTPService otpService) {
         this.appUserRepository = appUserRepository;
         this.jwtService = jwtService;
 
+
+        this.otpService = otpService;
     }
 
 
@@ -72,7 +77,9 @@ public class UserService {
             AppUser appUser = username.get();
             boolean checkpw = BCrypt.checkpw(loginDto.getPassword(), appUser.getPassword());
             if (checkpw) {
-                return jwtService.generateToken(loginDto.getUsername());
+                otpService.generateOTP(appUser.getMobileNumber());
+
+                return "OTP sent successfully kindly verify it";
             }
         }
         return "Invalid Username Or Password";
@@ -88,4 +95,6 @@ public class UserService {
         UserDto userDto1 = mapToDto(save);
         return userDto1;
     }
+
+
 }
