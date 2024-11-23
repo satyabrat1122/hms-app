@@ -4,7 +4,6 @@ import com.hms.entity.AppUser;
 import com.hms.entity.Property;
 import com.hms.entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
