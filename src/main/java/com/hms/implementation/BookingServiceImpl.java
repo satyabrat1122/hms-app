@@ -11,6 +11,7 @@ import com.hms.services.BookingService;
 import com.hms.services.PdfService;
 import com.hms.services.TwilioService;
 import com.hms.services.WhatsAppService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +25,8 @@ public class BookingServiceImpl implements BookingService {
     private PdfService pdfService;
     private TwilioService twilioService;
     private WhatsAppService whatsAppService;
-
+    @Value("${phone.number}")
+    private String fromNumber;
 
     public BookingServiceImpl(PropertyRepository propertyRepository,
                               RoomsRepository roomsRepository,
@@ -69,8 +71,8 @@ public class BookingServiceImpl implements BookingService {
 
         }
         pdfService.generateBookingPdf("G:\\hms_bookings\\confirmation-order" + savedBooking.getId() + ".pdf", property, savedBooking);
-      //  twilioService.sendSms("+917608825266",  "Booking Confirmed. Your booking id is: " + bookings.getId());
-        whatsAppService.sendWhatsAppMessage("+917608825266", "+14155238886", "Booking Confirmed. Your booking id is: " + bookings.getId());
+        twilioService.sendSms("+917608825266","Booking Confirmed. Your booking id is: " + bookings.getId());
+        whatsAppService.sendWhatsAppMessage("+917608825266", "Booking Confirmed. Your booking id is: " + bookings.getId());
         return "Booking Created Successfully";
     }
 

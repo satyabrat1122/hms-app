@@ -15,15 +15,18 @@ public class UserService {
     private AppUserRepository appUserRepository;
     private JWTService jwtService;
     private OTPService otpService;
+    private WhatsAppService whatsAppService;
 
 
 
-    public UserService(AppUserRepository appUserRepository, SecurityConfig securityConfig, JWTService jwtService, OTPService otpService) {
+
+    public UserService(AppUserRepository appUserRepository, SecurityConfig securityConfig, JWTService jwtService, OTPService otpService, WhatsAppService whatsAppService) {
         this.appUserRepository = appUserRepository;
         this.jwtService = jwtService;
 
 
         this.otpService = otpService;
+        this.whatsAppService = whatsAppService;
     }
 
 
@@ -77,7 +80,8 @@ public class UserService {
             AppUser appUser = username.get();
             boolean checkpw = BCrypt.checkpw(loginDto.getPassword(), appUser.getPassword());
             if (checkpw) {
-                otpService.generateOTP(appUser.getMobileNumber());
+                String s = otpService.generateOTP(appUser.getMobileNumber());
+                whatsAppService.sendWhatsAppMessage("+917608825266","Your OTP is: " + s);
 
                 return "OTP sent successfully kindly verify it";
             }
