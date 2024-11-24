@@ -80,8 +80,8 @@ public class UserService {
             AppUser appUser = username.get();
             boolean checkpw = BCrypt.checkpw(loginDto.getPassword(), appUser.getPassword());
             if (checkpw) {
-                String s = otpService.generateOTP(appUser.getMobileNumber());
-                whatsAppService.sendWhatsAppMessage("+917608825266","Your OTP is: " + s);
+                otpService.generateOTP(appUser.getMobileNumber());
+                otpService.generateWhatsappOTP(appUser.getMobileNumber());
 
                 return "OTP sent successfully kindly verify it";
             }

@@ -1,14 +1,14 @@
 package com.hms.services;
 
- class OTPData{
-    private final String otp;
+ class SMSOTPData {
+    private final String smsOtp;
     private final long expiryTime;
-    public OTPData(String otp,long expiryTime) {
-        this.otp = otp;
+    public SMSOTPData(String smsOtp, long expiryTime) {
+        this.smsOtp = smsOtp;
         this.expiryTime = expiryTime;
     }
     public String getOTP() {
-        return otp;
+        return smsOtp;
     }
     public long getExpiryTime() {
         return expiryTime;

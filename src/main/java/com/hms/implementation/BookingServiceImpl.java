@@ -48,7 +48,6 @@ public class BookingServiceImpl implements BookingService {
             if (room.getCount() == 0) {
                 return "Rooms not available on: " + room.getDate();
             }
-
         }
         double basePrice = 0;
         for (Rooms room : rooms) {
