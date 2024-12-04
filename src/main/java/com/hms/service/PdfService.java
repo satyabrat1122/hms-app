@@ -1,12 +1,10 @@
-package com.hms.services;
+package com.hms.service;
 
 import com.hms.entity.Bookings;
 import com.hms.entity.Property;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import org.springframework.stereotype.Service;
-
-import java.io.*;
 
 
 import java.io.FileOutputStream;
@@ -35,9 +33,9 @@ public class PdfService {
         table.addCell("Email Id");
         table.addCell(bookings.getEmailId());
         table.addCell("Check in date");
-        table.addCell(bookings.getFromDate().toString());
+        table.addCell(bookings.getCheckInDate().toString());
         table.addCell("Check out date");
-        table.addCell(bookings.getToDate().toString());
+        table.addCell(bookings.getCheckOutDate().toString());
         table.addCell("Property Id");
         table.addCell(property.getId().toString());
         table.addCell("name");

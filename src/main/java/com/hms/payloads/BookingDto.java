@@ -12,8 +12,8 @@ public class BookingDto {
 
     private String name;
     private String emailId;
-    private LocalDate fromDate;
-    private LocalDate toDate;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
     private Property property;
     private Long property_id;
 }

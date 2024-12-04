@@ -1,4 +1,4 @@
-package com.hms.services;
+package com.hms.service;
 
 public class WhatsappOTPData {
     private final String whatsappOtp;

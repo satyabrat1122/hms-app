@@ -1,7 +1,7 @@
 package com.hms.controllers;
 
 import com.hms.entity.Property;
-import com.hms.implementation.PropertyServiceImpl;
+import com.hms.service.PropertyServiceImpl;
 import com.hms.payloads.PropertyDto;
 import com.hms.repository.PropertyRepository;
 import org.springframework.http.HttpStatus;

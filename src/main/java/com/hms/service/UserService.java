@@ -1,4 +1,4 @@
-package com.hms.services;
+package com.hms.service;
 
 import com.hms.configs.SecurityConfig;
 import com.hms.entity.AppUser;
@@ -8,6 +8,7 @@ import com.hms.repository.AppUserRepository;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,14 +24,12 @@ public class UserService {
     public UserService(AppUserRepository appUserRepository, SecurityConfig securityConfig, JWTService jwtService, OTPService otpService, WhatsAppService whatsAppService) {
         this.appUserRepository = appUserRepository;
         this.jwtService = jwtService;
-
-
         this.otpService = otpService;
         this.whatsAppService = whatsAppService;
     }
 
 
-    public String alreadyExist(UserDto userDto) {
+    public String alreadyExist(AppUser userDto) {
         AppUser appUser=new AppUser();
         Optional<AppUser> byUsername = appUserRepository.findByUsername(userDto.getUsername());
         if(byUsername.isPresent()){
@@ -61,8 +60,8 @@ public class UserService {
         return dto;
     }
 
-    public UserDto createUser(UserDto userDto) {
-        AppUser appUser = mapToEntity(userDto);
+    public UserDto createUser(AppUser appUser) {
+
         String hashpw = BCrypt.hashpw(appUser.getPassword(), BCrypt.gensalt(5));
         appUser.setPassword(hashpw);
         appUser.setRole("ROLE_USER");
@@ -70,8 +69,14 @@ public class UserService {
         UserDto userDto1 = mapToDto(save);
         return userDto1;
     }
-
-
+     public AppUser createUser1(AppUser user){
+         AppUser save = appUserRepository.save(user);
+         return save;
+     }
+  public List getAllUsers(){
+      List<AppUser> all = appUserRepository.findAll();
+      return all;
+  }
 
     public String login(LoginDto loginDto) {
         AppUser user = new AppUser();
@@ -82,7 +87,7 @@ public class UserService {
             if (checkpw) {
                 otpService.generateOTP(appUser.getMobileNumber());
                 otpService.generateWhatsappOTP(appUser.getMobileNumber());
-
+                otpService.generateEmailOtp(appUser.getEmail());
                 return "OTP sent successfully kindly verify it";
             }
         }
@@ -90,8 +95,8 @@ public class UserService {
     }
 
 
-    public UserDto createPropertyOwner(UserDto userDto) {
-        AppUser appUser = mapToEntity(userDto);
+    public UserDto createPropertyOwner(AppUser appUser) {
+
         String hashpw = BCrypt.hashpw(appUser.getPassword(), BCrypt.gensalt(5));
         appUser.setPassword(hashpw);
         appUser.setRole("ROLE_OWNER");

@@ -2,13 +2,15 @@ package com.hms.controllers;
 
 import com.hms.entity.AppUser;
 import com.hms.entity.Review;
-import com.hms.implementation.ReviewServiceImpl;
+import com.hms.service.ReviewServiceImpl;
 import com.hms.repository.PropertyRepository;
 import com.hms.repository.ReviewRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,15 +28,19 @@ public class ReviewController {
         this.reviewRepository = reviewRepository;
         this.reviewServiceImpl = reviewServiceImpl;
     }
-    @PostMapping
-    //localhost:8080/api/v1/review?propertyId=1
+    @PostMapping(path = "/upload/file/{bucketName}/property/{propertyId}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+
     public ResponseEntity<?> write(
+            @RequestParam MultipartFile file,
+            @PathVariable String bucketName,
             @RequestBody Review review,
-            @RequestParam long propertyId,
+            @PathVariable long propertyId,
             @AuthenticationPrincipal AppUser user
             ){
 
-        Review save = reviewServiceImpl.addReview(review, propertyId, user);
+        Review save = reviewServiceImpl.addReview(review, propertyId, user, file, bucketName);
         if (save==null){
             return new ResponseEntity<>("Already review exists by the user",HttpStatus.OK);
         }

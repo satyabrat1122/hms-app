@@ -20,6 +20,9 @@ public class Review {
     @Column(name = "description", length = 1000)
     private String description;
 
+    @Column(name="image_url")
+    private String imageUrl;
+
     @ManyToOne
     @JoinColumn(name = "app_user_id")
     private AppUser appUser;

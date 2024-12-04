@@ -1,12 +1,14 @@
 package com.hms.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
+@Builder
+
+@AllArgsConstructor
 @Table(name = "app_user")
 public class AppUser {
     @Id
@@ -32,4 +34,6 @@ public class AppUser {
     @Column(name = "mobile_number", nullable = false)
     private String mobileNumber;
 
+
+    public AppUser(){}
 }

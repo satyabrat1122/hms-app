@@ -1,22 +1,21 @@
-package com.hms.implementation;
+package com.hms.service;
 
 import com.hms.entity.State;
 import com.hms.payloads.StateDto;
 import com.hms.repository.StateRepository;
-import com.hms.services.StateService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class StateServiceImpl implements StateService {
+public class StateService {
    private StateRepository stateRepository;
 
-    public StateServiceImpl(StateRepository stateRepository) {
+    public StateService(StateRepository stateRepository) {
         this.stateRepository = stateRepository;
     }
 
-    @Override
+
     public String addState(StateDto stateDto) {
         Optional<State> state = stateRepository.findStateByName(stateDto.getName());
         if(state.isPresent()){

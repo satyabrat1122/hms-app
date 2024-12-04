@@ -8,13 +8,17 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface RoomsRepository extends JpaRepository<Rooms, Long> {
-    @Query("SELECT r FROM Rooms r WHERE r.property = :property AND r.type=:type and r.date between :fromDate and :toDate")
+    @Query("SELECT r FROM Rooms r WHERE r.property = :property AND r.type=:type and r.date between :checkInDate and :checkOutDate")
     List<Rooms> findAvailableRooms(@Param("property") Property property,
                                    @Param("type") String type,
-                                   @Param("fromDate") LocalDate fromDate,
-                                   @Param("toDate") LocalDate toDate);
+                                   @Param("checkInDate") LocalDate checkInDate,
+                                   @Param("checkOutDate") LocalDate checkOut);
+
+
+    //Optional<Rooms> findByDate(LocalDate checkOutDate);
 
 
 }

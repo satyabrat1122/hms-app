@@ -2,7 +2,7 @@ package com.hms.configs;
 
 import com.hms.entity.AppUser;
 import com.hms.repository.AppUserRepository;
-import com.hms.services.JWTService;
+import com.hms.service.JWTService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,7 +34,7 @@ public class JWTFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         String token=request.getHeader("Authorization");
-        System.out.println(token);
+
         if(token!=null && token.startsWith("Bearer ")){
             String tokenValue = token.substring(8, token.length() - 1);
             String userName = jwtService.getUsername(tokenValue);

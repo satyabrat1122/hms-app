@@ -1,4 +1,4 @@
-package com.hms.services;
+package com.hms.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.AmazonS3Exception;

@@ -7,7 +7,7 @@ import java.util.Random;
 @Component
 public class OTPUtil {
 
-    private static final int OTP_LENGTH = 6;
+    private static final int OTP_LENGTH = 4;
 
     public String generateOTP() {
         Random random = new Random();

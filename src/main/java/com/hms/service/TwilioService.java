@@ -1,4 +1,4 @@
-package com.hms.services;
+package com.hms.service;
 
 
 import com.twilio.rest.api.v2010.account.Message;
@@ -13,7 +13,7 @@ public class TwilioService {
     public String sendSms(String to,String content){
         Message message=Message.creator(
                 new com.twilio.type.PhoneNumber(to),
-                new com.twilio.type.PhoneNumber("+14158437817"),
+                new com.twilio.type.PhoneNumber(fromNumber),
                 content
         ).create();
         return message.getSid();

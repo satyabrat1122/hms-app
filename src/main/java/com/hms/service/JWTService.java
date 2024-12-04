@@ -1,4 +1,4 @@
-package com.hms.services;
+package com.hms.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

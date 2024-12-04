@@ -16,15 +16,11 @@ public class Rooms {
     @Column(name = "id", nullable = false)
     private Long id;
 
-
     @Column(name="type" , nullable = false)
     private String type;
 
-
     @Column(name="count" , nullable = false)
     private Integer count;
-
-
 
     @ManyToOne
     @JoinColumn(name = "property_id")
@@ -35,5 +31,8 @@ public class Rooms {
 
     @Column(name = "per_night_price", nullable = false)
     private Double perNightPrice;
+
+    @Version
+    private long versions;
 
 }

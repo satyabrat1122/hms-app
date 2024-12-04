@@ -1,7 +1,7 @@
 package com.hms.controllers;
 
 import com.hms.entity.Rooms;
-import com.hms.implementation.RoomsServiceImpl;
+import com.hms.service.RoomsServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

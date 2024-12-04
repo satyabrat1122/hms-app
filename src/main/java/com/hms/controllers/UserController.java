@@ -7,12 +7,11 @@ import com.hms.payloads.UserDto;
 
 import com.hms.repository.AppUserRepository;
 import com.hms.repository.BookingsRepository;
-import com.hms.services.JWTService;
-import com.hms.services.OTPService;
-import com.hms.services.UserService;
+import com.hms.service.JWTService;
+import com.hms.service.OTPService;
+import com.hms.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -41,14 +40,14 @@ public class UserController {
     @PostMapping("/signup")
     //localhost:8080/api/v1/users/signup
     public ResponseEntity<?> signUp(
-            @RequestBody UserDto userDto
+            @RequestBody AppUser user
             )
     {
-        String s = userService.alreadyExist(userDto);
+        String s = userService.alreadyExist(user);
         if(s!=null) {
             return new ResponseEntity<>(s, HttpStatus.OK);
         }
-        UserDto dto=userService.createUser(userDto);
+        UserDto dto=userService.createUser(user);
         return new ResponseEntity<>(dto,HttpStatus.CREATED);
 
     }
@@ -62,14 +61,14 @@ public class UserController {
     }
     @PostMapping("/signup-property-owner")
     public ResponseEntity<?> createPropertyOwnerUser(
-            @RequestBody UserDto userDto
+            @RequestBody AppUser user
     )
     {
-        String s = userService.alreadyExist(userDto);
+        String s = userService.alreadyExist(user);
         if(s!=null) {
             return new ResponseEntity<>(s, HttpStatus.OK);
         }
-        UserDto dto=userService.createPropertyOwner(userDto);
+        UserDto dto=userService.createPropertyOwner(user);
         return new ResponseEntity<>(dto,HttpStatus.CREATED);
 
     }
@@ -95,6 +94,19 @@ public class UserController {
         } else {
             return new ResponseEntity<>("Invalid or Expired OTP",HttpStatus.OK);
         }
+    }
+    @PostMapping("/validate-email-otp")
+    public ResponseEntity<?> validateEmailOtp(@RequestParam String email,@RequestParam String otp){
+        boolean b = otpService.validateEmailOtp(email, otp);
+        if(b){
+            AppUser appUser = appUserRepository.findByEmail(email).get();
+            String s = jwtService.generateToken(appUser.getUsername());
+            TokenDto tokenDto=new TokenDto();
+            tokenDto.setStatus("Validate Successfully");
+            tokenDto.setToken(s);
+            return  new ResponseEntity<>(tokenDto,HttpStatus.OK);
+        }return new ResponseEntity<>("Invalid or Expired OTP",HttpStatus.OK);
+
     }
 
 }

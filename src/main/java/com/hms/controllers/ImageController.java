@@ -4,7 +4,7 @@ package com.hms.controllers;
 import com.hms.entity.AppUser;
 import com.hms.entity.Images;
 
-import com.hms.implementation.ImagesServiceImpl;
+import com.hms.service.ImagesServiceImpl;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,7 +29,9 @@ public class ImageController {
         this.imagesServiceImpl = imagesServiceImpl;
     }
 
-    @PostMapping(path = "/upload/file/{bucketName}/property/{propertyId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/upload/file/{bucketName}/property/{propertyId}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     //localhost:8080/api/v1/image/upload/file/image/property/1
     public ResponseEntity<?> uploadPropertyPhotos(@RequestParam MultipartFile file,
                                         @PathVariable String bucketName,
@@ -42,7 +44,10 @@ public class ImageController {
 //        Images images=new Images();
 //        images.setUrl(imageUrl);
 //        images.setProperty(property);
-        Images save = imagesServiceImpl.save(file, bucketName, propertyId);
+        Images save = imagesServiceImpl.save(file,bucketName, propertyId, user);
+        if(save==null){
+            return new ResponseEntity<>("Sorry you are not the owner", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return new ResponseEntity<>(save, HttpStatus.OK);
     }
     @GetMapping

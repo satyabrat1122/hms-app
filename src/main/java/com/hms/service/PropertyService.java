@@ -1,4 +1,4 @@
-package com.hms.implementation;
+package com.hms.service;
 
 import com.hms.entity.City;
 import com.hms.entity.Country;
@@ -9,26 +9,25 @@ import com.hms.repository.CityRepository;
 import com.hms.repository.CountryRepository;
 import com.hms.repository.PropertyRepository;
 import com.hms.repository.StateRepository;
-import com.hms.services.PropertyService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class PropertyServiceImpl implements PropertyService {
+public class PropertyService {
     private PropertyRepository propertyRepository;
     private CityRepository cityRepository;
     private CountryRepository countryRepository;
     private StateRepository stateRepository;
 
-    public PropertyServiceImpl(PropertyRepository propertyRepository, CityRepository cityRepository, CountryRepository countryRepository, StateRepository stateRepository) {
+    public PropertyService(PropertyRepository propertyRepository, CityRepository cityRepository, CountryRepository countryRepository, StateRepository stateRepository) {
         this.propertyRepository = propertyRepository;
         this.cityRepository = cityRepository;
         this.countryRepository = countryRepository;
         this.stateRepository = stateRepository;
     }
 
-    @Override
+
     public void addProperty(PropertyDto propertyDto, long country_id, long city_id,long state_id) {
         City city = cityRepository.findById(city_id).orElseThrow(() -> new RuntimeException("City Not Found"));
         Country country = countryRepository.findById(country_id).orElseThrow(() -> new RuntimeException("Country not found"));
@@ -41,19 +40,17 @@ public class PropertyServiceImpl implements PropertyService {
 
     }
 
-    @Override
+
     public List getAllProperty() {
         List<Property> all = propertyRepository.findAll();
         return all;
 
     }
-
-    @Override
-    public void deletePropertyById(long property_id) {
+ public void deletePropertyById(long property_id) {
 
     }
 
-    @Override
+
     public boolean updatePropertyById(long property_id, PropertyDto propertyDto) {
         Property property = propertyRepository.findById(property_id).orElseThrow(() -> new RuntimeException("Id Not Found"));
         City city = cityRepository.

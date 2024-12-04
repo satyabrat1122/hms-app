@@ -1,6 +1,6 @@
 package com.hms.controllers;
 
-import com.hms.implementation.StateServiceImpl;
+import com.hms.service.StateServiceImpl;
 import com.hms.payloads.StateDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

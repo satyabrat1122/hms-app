@@ -1,4 +1,4 @@
-package com.hms.implementation;
+package com.hms.service;
 
 import com.hms.entity.AppUser;
 import com.hms.entity.Property;
@@ -6,36 +6,39 @@ import com.hms.entity.Review;
 import com.hms.repository.AppUserRepository;
 import com.hms.repository.PropertyRepository;
 import com.hms.repository.ReviewRepository;
-import com.hms.services.ReviewService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class ReviewServiceImpl implements ReviewService {
+public class ReviewService {
     private ReviewRepository reviewRepository;
     private PropertyRepository propertyRepository;
     private AppUserRepository appUserRepository;
-    public ReviewServiceImpl(ReviewRepository reviewRepository, PropertyRepository propertyRepository, AppUserRepository appUserRepository) {
+    private BucketService bucketService;
+    public ReviewService(ReviewRepository reviewRepository, PropertyRepository propertyRepository, AppUserRepository appUserRepository, BucketService bucketService) {
         this.reviewRepository = reviewRepository;
         this.propertyRepository = propertyRepository;
         this.appUserRepository = appUserRepository;
+        this.bucketService = bucketService;
     }
 
 
-    @Override
-    public Review addReview(Review review, long propertyId, AppUser user) {
+
+    public Review addReview(Review review, long propertyId, AppUser user, MultipartFile file,String bucketName) {
         Property property = propertyRepository.findById(propertyId).get();
         boolean b = reviewRepository.existsByAppUserAndPropertyId(user, propertyId);
         if(b==false){
             review.setProperty(property);
             review.setAppUser(user);
+            String imageUrl = bucketService.uploadFile(file, bucketName);
+            review.setImageUrl(imageUrl);
             Review save = reviewRepository.save(review);
             return save;
         }
         return null;
     }
 
-    @Override
-    public String deleteReview(long reviewId,AppUser user) {
+        public String deleteReview(long reviewId,AppUser user) {
         AppUser appUser = appUserRepository.findById(user.getId()).get();
         Review review = reviewRepository.findById(reviewId).get();
         if(review==null){

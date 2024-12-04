@@ -1,6 +1,9 @@
 package com.hms.entity;
 
 import jakarta.persistence.*;
+
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,11 +21,13 @@ public class Bookings {
     private String name;
     private String emailId;
 
-    @Column(name = "from_date", nullable = false)
-    private LocalDate fromDate;
+    @Column(name = "check_in_date", nullable = false)
+    @FutureOrPresent
+    private LocalDate checkInDate;
+    @Future
+    @Column(name = "check_out_date", nullable = false)
 
-    @Column(name = "to_date", nullable = false)
-    private LocalDate toDate;
+    private LocalDate checkOutDate;
 
     @ManyToOne
     @JoinColumn(name = "property_id")

@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -42,5 +45,7 @@ public class Property {
     @ManyToOne
     @JoinColumn(name = "state_id")
     private State state;
+
+
 
 }

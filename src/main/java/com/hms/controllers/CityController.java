@@ -1,7 +1,7 @@
 package com.hms.controllers;
 
 import com.hms.entity.City;
-import com.hms.implementation.CityServiceImpl;
+import com.hms.service.CityServiceImpl;
 import com.hms.payloads.CityDto;
 import com.hms.repository.CityRepository;
 import org.springframework.http.HttpStatus;
