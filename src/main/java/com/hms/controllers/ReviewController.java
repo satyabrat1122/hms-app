@@ -2,7 +2,8 @@ package com.hms.controllers;
 
 import com.hms.entity.AppUser;
 import com.hms.entity.Review;
-import com.hms.service.ReviewServiceImpl;
+import com.hms.service.ReviewService;
+
 import com.hms.repository.PropertyRepository;
 import com.hms.repository.ReviewRepository;
 import org.springframework.http.HttpStatus;
@@ -21,12 +22,12 @@ import java.util.List;
 public class ReviewController {
     private PropertyRepository propertyRepository;
     private ReviewRepository reviewRepository;
-    private  ReviewServiceImpl reviewServiceImpl;
+    private ReviewService reviewService;
 
-    public ReviewController(PropertyRepository propertyRepository, ReviewRepository reviewRepository, ReviewServiceImpl reviewServiceImpl) {
+    public ReviewController(PropertyRepository propertyRepository, ReviewRepository reviewRepository, ReviewService reviewService) {
         this.propertyRepository = propertyRepository;
         this.reviewRepository = reviewRepository;
-        this.reviewServiceImpl = reviewServiceImpl;
+        this.reviewService = reviewService;
     }
     @PostMapping(path = "/upload/file/{bucketName}/property/{propertyId}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
@@ -40,7 +41,7 @@ public class ReviewController {
             @AuthenticationPrincipal AppUser user
             ){
 
-        Review save = reviewServiceImpl.addReview(review, propertyId, user, file, bucketName);
+        Review save = reviewService.addReview(review, propertyId, user, file, bucketName);
         if (save==null){
             return new ResponseEntity<>("Already review exists by the user",HttpStatus.OK);
         }
@@ -65,7 +66,7 @@ public class ReviewController {
             @PathVariable("id") long propertyId
             ) {
 
-        String s = reviewServiceImpl.updateUserReview(review, user, propertyId);
+        String s = reviewService.updateUserReview(review, user, propertyId);
 
         return  new ResponseEntity<>(s,HttpStatus.OK);
     }
@@ -74,7 +75,7 @@ public class ReviewController {
     public String deleteReview(@PathVariable("id") long reviewId,
                                @AuthenticationPrincipal AppUser user
     ){
-        String status=reviewServiceImpl.deleteReview(reviewId,user);
+        String status=reviewService.deleteReview(reviewId,user);
         return status;
     }
 }

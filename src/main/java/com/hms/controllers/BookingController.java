@@ -1,7 +1,8 @@
 package com.hms.controllers;
 
 import com.hms.entity.Bookings;
-import com.hms.service.BookingServiceImpl;
+import com.hms.service.BookingService;
+
 import com.hms.payloads.BookingDto;
 import com.hms.repository.BookingsRepository;
 import org.springframework.http.HttpStatus;
@@ -15,12 +16,12 @@ import java.util.List;
 public class BookingController {
 
     private BookingsRepository bookingsRepository;
-    private BookingServiceImpl bookingServiceImpl;
+    private BookingService bookingService;
 
 
-    public BookingController( BookingsRepository bookingsRepository, BookingServiceImpl bookingServiceImpl) {
+    public BookingController( BookingsRepository bookingsRepository, BookingService bookingService) {
         this.bookingsRepository = bookingsRepository;
-        this.bookingServiceImpl = bookingServiceImpl;
+        this.bookingService = bookingService;
 
     }
 
@@ -31,7 +32,7 @@ public class BookingController {
             @RequestBody BookingDto bookingsDto,
             @RequestParam String type
     ) {
-        String booking = bookingServiceImpl.createBooking(propertyId, bookingsDto, type);
+        String booking = bookingService.createBooking(propertyId, bookingsDto, type);
         return booking;
     }
 

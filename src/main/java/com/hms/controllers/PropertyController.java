@@ -1,7 +1,8 @@
 package com.hms.controllers;
 
 import com.hms.entity.Property;
-import com.hms.service.PropertyServiceImpl;
+import com.hms.service.PropertyService;
+
 import com.hms.payloads.PropertyDto;
 import com.hms.repository.PropertyRepository;
 import org.springframework.http.HttpStatus;
@@ -14,11 +15,11 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/property")
 public class PropertyController {
-    private PropertyServiceImpl propertyServiceImpl ;
+    private PropertyService propertyService ;
     private PropertyRepository propertyRepository;
 
-    public PropertyController(PropertyServiceImpl propertyServiceImpl, PropertyRepository propertyRepository) {
-        this.propertyServiceImpl = propertyServiceImpl;
+    public PropertyController(PropertyService propertyServiceImpl, PropertyRepository propertyRepository) {
+        this.propertyService = propertyService;
 
         this.propertyRepository = propertyRepository;
     }
@@ -36,7 +37,7 @@ public class PropertyController {
         if(byName.isPresent()){
             return new ResponseEntity<>("Property already exists", HttpStatus.NOT_ACCEPTABLE);
         }else{
-            propertyServiceImpl.addProperty(propertyDto, country_id,city_id,state_id);
+            propertyService.addProperty(propertyDto, country_id,city_id,state_id);
             return new ResponseEntity<>("Property successfully added", HttpStatus.CREATED);
         }
     }
@@ -62,7 +63,7 @@ public class PropertyController {
                                             @RequestBody PropertyDto propertyDto){
         Optional<Property> byId = propertyRepository.findById(property_id);
         if(byId.isPresent()){
-            boolean b = propertyServiceImpl.updatePropertyById(property_id, propertyDto);
+            boolean b = propertyService.updatePropertyById(property_id, propertyDto);
             if(b==true){
                 return new ResponseEntity<>("Update Successfully",HttpStatus.OK);
             }

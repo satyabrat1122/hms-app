@@ -4,7 +4,8 @@ package com.hms.controllers;
 import com.hms.entity.AppUser;
 import com.hms.entity.Images;
 
-import com.hms.service.ImagesServiceImpl;
+import com.hms.service.ImagesService;
+
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,12 +22,12 @@ public class ImageController {
 
 
 
-    private ImagesServiceImpl imagesServiceImpl;
+    private ImagesService imagesService;
 
-    public ImageController( ImagesServiceImpl imagesServiceImpl) {
+    public ImageController( ImagesService imagesService) {
 
 
-        this.imagesServiceImpl = imagesServiceImpl;
+        this.imagesService = imagesService;
     }
 
     @PostMapping(path = "/upload/file/{bucketName}/property/{propertyId}",
@@ -44,7 +45,7 @@ public class ImageController {
 //        Images images=new Images();
 //        images.setUrl(imageUrl);
 //        images.setProperty(property);
-        Images save = imagesServiceImpl.save(file,bucketName, propertyId, user);
+        Images save = imagesService.save(file,bucketName, propertyId, user);
         if(save==null){
             return new ResponseEntity<>("Sorry you are not the owner", HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -52,7 +53,7 @@ public class ImageController {
     }
     @GetMapping
     public ResponseEntity<?> listAllPropertyPhotos(@RequestParam long propertyId) {
-        List<Images> allImages= imagesServiceImpl.getAllImages(propertyId);
+        List<Images> allImages= imagesService.getAllImages(propertyId);
         if(allImages.isEmpty()){
             return new ResponseEntity<>("No images found", HttpStatus.OK);
         }

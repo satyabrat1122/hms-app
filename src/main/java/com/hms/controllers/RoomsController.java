@@ -1,16 +1,17 @@
 package com.hms.controllers;
 
 import com.hms.entity.Rooms;
-import com.hms.service.RoomsServiceImpl;
+import com.hms.service.RoomsService;
+
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/rooms")
 public class RoomsController {
-    private RoomsServiceImpl roomsServiceImpl;
+    private RoomsService roomsService;
 
-    public RoomsController(RoomsServiceImpl roomsServiceImpl) {
-        this.roomsServiceImpl = roomsServiceImpl;
+    public RoomsController(RoomsService roomsService) {
+        this.roomsService = roomsService;
     }
 
 
@@ -20,7 +21,7 @@ public class RoomsController {
             @PathVariable("id") long propertyId,
             @RequestBody Rooms rooms
     ){
-        String s = roomsServiceImpl.addRooms(propertyId,rooms);
+        String s = roomsService.addRooms(propertyId,rooms);
         return s;
     }
 }

@@ -1,6 +1,7 @@
 package com.hms.controllers;
 
-import com.hms.service.StateServiceImpl;
+import com.hms.service.StateService;
+
 import com.hms.payloads.StateDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,17 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/state")
 public class StateController {
 
-    private StateServiceImpl stateServiceImpl;
+    private StateService stateService;
 
-    public StateController(StateServiceImpl stateServiceImpl) {
-        this.stateServiceImpl = stateServiceImpl;
+    public StateController(StateService stateService) {
+        this.stateService = stateService;
     }
 
     @PostMapping("/add")
     public ResponseEntity<?> addState(
             @RequestBody StateDto stateDto
     ){
-        String s=stateServiceImpl.addState(stateDto);
+        String s=stateService.addState(stateDto);
         return new ResponseEntity<>(s, HttpStatus.OK);
     }
 

@@ -2,7 +2,8 @@ package com.hms.controllers;
 
 import com.hms.entity.AppUser;
 import com.hms.entity.Country;
-import com.hms.service.CountryServiceImpl;
+import com.hms.service.CountryService;
+
 import com.hms.payloads.CountryDto;
 import com.hms.repository.CountryRepository;
 import org.springframework.http.HttpStatus;
@@ -16,13 +17,13 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/country")
 public class CountryController {
-     private CountryServiceImpl countryServiceImpl;
+     private CountryService countryService;
     private  CountryRepository countryRepository;
 
 
-    public CountryController(CountryServiceImpl countryServiceImpl,
+    public CountryController(CountryService countryService,
                              CountryRepository countryRepository) {
-        this.countryServiceImpl = countryServiceImpl;
+        this.countryService = countryService;
         this.countryRepository = countryRepository;
     }
 
@@ -35,7 +36,7 @@ public class CountryController {
         if(byName.isPresent()){
             return new ResponseEntity<>("Already present ",HttpStatus.OK);
         }
-        countryServiceImpl.addCountry(countryDto);
+        countryService.addCountry(countryDto);
         return new ResponseEntity<>("Added successfully",HttpStatus.CREATED);
 
   }
@@ -49,11 +50,11 @@ public class CountryController {
 //localhost:8080/api/v1/country
   @DeleteMapping("/{id}")
   public String deleteCountry(@PathVariable("id") long countryId){
-      Country country = countryServiceImpl.findById(countryId);
+      Country country = countryService.findById(countryId);
 
       if (country != null) {
           // Delete the country (if no cascading delete is set on properties, properties will not be deleted)
-          countryServiceImpl.deleteCountryById(countryId);
+          countryService.deleteCountryById(countryId);
           return "Country Deleted, Properties Retained";
       } else {
           return "Country not found";
@@ -63,7 +64,7 @@ public class CountryController {
   @PutMapping("/{id}")
   public String updateCountry(@PathVariable("id") long countryId,
                               @RequestBody CountryDto countryDto){
-      boolean b = countryServiceImpl.updateCountryById(countryId, countryDto);
+      boolean b = countryService.updateCountryById(countryId, countryDto);
       if(b==true){
           return "Updated";
       }
