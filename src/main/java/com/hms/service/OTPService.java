@@ -1,16 +1,8 @@
 package com.hms.service;
-
-
-
-import com.hms.services.SMSOTPData;
 import com.hms.util.OTPUtil;
-
-
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -84,7 +76,7 @@ public class OTPService {
            otpStorage.remove(mobileNumber);
            return false;
        }
-       if (storedOTPData.getOTP().equals(otp) || storedOTPData2.getWhatsappOtp().equals(otp)) {
+       if (storedOTPData.getSmsOtp().equals(otp) || storedOTPData2.getWhatsappOtp().equals(otp)) {
            otpStorage.remove(mobileNumber);
            return true;
        }
@@ -109,7 +101,5 @@ public class OTPService {
                return true;
            }
            return false;
-
-       }
-
-   }
+    }
+ }
