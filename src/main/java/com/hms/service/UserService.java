@@ -29,13 +29,13 @@ public class UserService {
     }
 
 
-    public String alreadyExist(AppUser userDto) {
-        AppUser appUser=new AppUser();
-        Optional<AppUser> byUsername = appUserRepository.findByUsername(userDto.getUsername());
+    public String alreadyExist(AppUser user) {
+
+        Optional<AppUser> byUsername = appUserRepository.findByUsername(user.getUsername());
         if(byUsername.isPresent()){
             return "Already Username Exist";
         }
-        Optional<AppUser> byEmail = appUserRepository.findByEmail(userDto.getEmail());
+        Optional<AppUser> byEmail = appUserRepository.findByEmail(user.getEmail());
         if(byEmail.isPresent()){
             return "Already Email Exist";
         }
@@ -85,8 +85,9 @@ public class UserService {
             AppUser appUser = username.get();
             boolean checkpw = BCrypt.checkpw(loginDto.getPassword(), appUser.getPassword());
             if (checkpw) {
-                otpService.generateOTP(appUser.getMobileNumber());
-                otpService.generateWhatsappOTP(appUser.getMobileNumber());
+                String s = otpService.generateOTP(appUser.getMobileNumber());
+                //  otpService.generateWhatsappOTP(appUser.getMobileNumber());
+                whatsAppService.sendWhatsAppMessage(appUser.getMobileNumber(), s);
                 otpService.generateEmailOtp(appUser.getEmail());
                 return "OTP sent successfully kindly verify it";
             }

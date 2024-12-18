@@ -13,8 +13,6 @@ import java.util.Date;
 @Service
 public class JWTService {
 
-
-
     @Value("${jwt.algorithm.key}")
     private String algorithmKey;
 
@@ -27,7 +25,7 @@ public class JWTService {
     private Algorithm algorithm;
 
     @PostConstruct
-    public void postContruct() throws UnsupportedEncodingException {
+    public void postConstruct() throws UnsupportedEncodingException {
         algorithm = Algorithm.HMAC256(algorithmKey);
     }
 

@@ -6,9 +6,8 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-@Builder
 
-@AllArgsConstructor
+
 @Table(name = "app_user")
 public class AppUser {
     @Id
@@ -35,5 +34,5 @@ public class AppUser {
     private String mobileNumber;
 
 
-    public AppUser(){}
+
 }

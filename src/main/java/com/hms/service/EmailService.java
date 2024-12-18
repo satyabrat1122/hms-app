@@ -26,8 +26,8 @@ public class EmailService {
         helper.setText(message);
 
         // Attach the PDF file
-        File pdfFile = new File("C:\\Users\\yogas\\Downloads\\feeReciept.pdf");
-        helper.addAttachment("YourFile.pdf", pdfFile);
+//        File pdfFile = new File("C:\\Users\\yogas\\Downloads\\feeReciept.pdf");
+//        helper.addAttachment("YourFile.pdf", pdfFile);
 
         // Send the email
         javaMailSender.send(mimeMessage);
